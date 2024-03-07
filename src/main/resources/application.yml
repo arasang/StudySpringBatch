@@ -1,0 +1,30 @@
+server:
+  port: 8082
+
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: ENC(wOGKNtONvFrN1/MGp5wB55c1NL4qT/Q8nUnVS7iD2MXcqoEdlokULPJLhMYX/WRijwUSHVYOAhM=)
+    username: ENC(kMLuw+dIjrtU5eqav0S8jHe/RbpOyOz+)
+    password: ENC(Fzk9bplkszsXVGOdHsEd6cCG3Y0JjxDE3Iv7UYc5YIE=)
+  data:
+    redis:
+      host: ENC(rGpJg8Rb4q4xDVfXbxdzgVmbUIXwcVPv)
+      port: 6379
+      password: ENC(CpXUjKBJ8yiRNSFwb2QaIW2+CtLtQ8VU)
+  batch:
+    jdbc:
+      initialize-schema: always
+
+redis:
+  key:
+    transaction: TRANSACTION
+
+backend:
+  ip: 127.0.0.1
+  port: 8081
+
+study:
+  eabledschedule: ${study.eabledschedule:false}
+  cron:
+    concurrencyJob: "*/10 * * * * *"
