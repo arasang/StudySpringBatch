@@ -8,6 +8,7 @@ import org.springframework.data.redis.connection.RedisConnectionFactory
 import org.springframework.data.redis.core.RedisTemplate
 import org.springframework.stereotype.Component
 import park.sangeun.studyspringbatch.concurrency.model.TransactionReq
+import java.text.ParseException
 
 @Component
 open class RedisUtils(
@@ -24,21 +25,20 @@ open class RedisUtils(
     @Autowired
     lateinit var template: RedisTemplate<String, Any>
 
-    @Bean
-    fun getWaitingData(): TransactionReq {
-        val target:Any =  template.opsForZSet().range(REDIS_KEY, 0, 0)?.iterator()?.next() as TransactionReq
+    fun getWaitingData(): TransactionReq? {
+        val data = template.opsForZSet().range(REDIS_KEY, 0, 0)?.iterator()?:return null
 
-        if (target is TransactionReq) {
-            logger.info("target : {}", target)
-        } else {
-            logger.error("Target is not TransactionReq")
+        var target:TransactionReq? = null
+
+        if (data.hasNext()) {
+            target = data.next() as TransactionReq
         }
 
-        return template.opsForZSet().range(REDIS_KEY, 0, 0)?.iterator()?.next() as TransactionReq
+        return target
     }
 
-    @Bean
-    fun deleteWaitingData(transactionReq: TransactionReq): Boolean {
+    fun deleteWaitingData(transactionReq: TransactionReq?): Boolean {
+        logger.info("[deleteWaitingData] !!! run")
         val removed = template.opsForZSet().remove(REDIS_KEY, transactionReq)
         if (removed != null && removed > 0) {
             // 삭제 완료

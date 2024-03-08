@@ -15,6 +15,8 @@ spring:
   batch:
     jdbc:
       initialize-schema: always
+    job:
+      name: ${JOB_NAME:NONE}
 
 redis:
   key:
@@ -25,6 +27,6 @@ backend:
   port: 8081
 
 study:
-  eabledschedule: ${study.eabledschedule:false}
+  enabledschedule: ${study.enabledschedule:false}
   cron:
-    concurrencyJob: "*/10 * * * * *"
+    concurrencyJob: "*/1 * * * * *"

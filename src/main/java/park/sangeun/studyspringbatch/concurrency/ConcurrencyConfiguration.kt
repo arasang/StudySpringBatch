@@ -3,6 +3,7 @@ package park.sangeun.studyspringbatch.concurrency
 import lombok.extern.slf4j.Slf4j
 import org.springframework.batch.core.Job
 import org.springframework.batch.core.Step
+import org.springframework.batch.core.configuration.annotation.StepScope
 import org.springframework.batch.core.job.builder.JobBuilder
 import org.springframework.batch.core.repository.JobRepository
 import org.springframework.batch.core.step.builder.StepBuilder
@@ -16,6 +17,7 @@ import park.sangeun.studyspringbatch.common.redis.RedisUtils
 import park.sangeun.studyspringbatch.concurrency.model.TransactionReq
 import park.sangeun.studyspringbatch.concurrency.processor.ConcurrencyProcessor
 import park.sangeun.studyspringbatch.concurrency.reader.ConcurrencyReader
+import park.sangeun.studyspringbatch.concurrency.writer.ConcurrencyWriter
 
 @Slf4j
 @Configuration
@@ -51,7 +53,7 @@ open class ConcurrencyConfiguration(
             .chunk<TransactionReq,TransactionReq>(CHUNK_SIZE, transactionManager)
             .reader(ConcurrencyReader(redisUtils, redisConfig))
             .processor (ConcurrencyProcessor(BACKEND_IP, BACKEND_PORT))
-            .writer(ItemWriter {  })
+            .writer(ConcurrencyWriter(redisUtils))
             .build()
     }
 }
