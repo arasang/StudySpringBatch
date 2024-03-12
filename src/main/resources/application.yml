@@ -18,6 +18,22 @@ spring:
     job:
       name: ${JOB_NAME:NONE}
 
+## AWS 용량때문에 로그 찍지 않도록 설정함.
+#logging:
+#  level:
+#    root: INFO
+#  file:
+#    name: /appstore/batch/practice/logs/StudySpringBatch.log  # 로그 파일 경로 지정
+#    pattern:
+#      console: "%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"  # 콘솔 로그 패턴 설정
+#      file: "%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"  # 파일 로그 패턴 설정
+#  rollingpolicy:
+#    filenamepattern: /appstore/batch/practice/logs/ogfile-%d{yyyy-MM-dd}-%i.log.zip
+#    maxfilesize: 10MB
+#    maxhistory: 7
+#    totalcap: 100MB
+#    compressionmode: ON
+
 redis:
   key:
     transaction: TRANSACTION
@@ -27,6 +43,6 @@ backend:
   port: 8081
 
 study:
-  enabledschedule: ${study.enabledschedule:false}
+  enabledschedule: ${spring.enabledschedule:false}
   cron:
     concurrencyJob: "*/1 * * * * *"
